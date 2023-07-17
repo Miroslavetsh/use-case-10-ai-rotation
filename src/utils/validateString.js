@@ -1,9 +1,11 @@
 export default function validateString({ inputString, maxLength }) {
-  const pattern = new RegExp(
-    '^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[!"#$%&\'()*+,-./:;<=>?@\\[\\]^_`{|}~])[A-Za-z\\d!"#$%&\'()*+,-./:;<=>?@\\[\\]^_`{|}~]{1,' +
-      maxLength +
-      '}$',
-  )
-
-  return pattern.test(inputString)
+  const result = {
+    lengthIsValid: inputString.length <= maxLength,
+    hasLowerCase: /[a-z]/.test(inputString),
+    hasUpperCase: /[A-Z]/.test(inputString),
+    hasDigit: /\d/.test(inputString),
+    hasSpecialChar: /[!\"#$%&'()*+,\-./:;<=>?@\\[\\\]^_`{|}~]/.test(inputString),
+    hasNoWhitespace: !/\s/.test(inputString),
+  }
+  return result
 }

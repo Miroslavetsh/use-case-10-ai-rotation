@@ -1,33 +1,17 @@
 import React, { useState } from 'react'
 
+import { validateString } from '../utils'
+
 const StringValidator = () => {
   const [inputString, setInputString] = useState('')
   const [maxLength, setMaxLength] = useState(20)
-  const [validationResult, setValidationResult] = useState({
-    lengthIsValid: true,
-    hasLowerCase: false,
-    hasUpperCase: false,
-    hasDigit: false,
-    hasSpecialChar: false,
-    hasNoWhitespace: true,
-  })
-
-  // TODO: move out to utils
-  const validateString = (str, maxLength) => {
-    const result = {
-      lengthIsValid: str.length <= maxLength,
-      hasLowerCase: /[a-z]/.test(str),
-      hasUpperCase: /[A-Z]/.test(str),
-      hasDigit: /\d/.test(str),
-      hasSpecialChar: /[!\"#$%&'()*+,\-./:;<=>?@\\[\\\]^_`{|}~]/.test(str),
-      hasNoWhitespace: !/\s/.test(str),
-    }
-    return result
-  }
+  const [validationResult, setValidationResult] = useState(
+    validateString({ inputString, maxLength }),
+  )
 
   const handleValidate = (event) => {
     event.preventDefault()
-    setValidationResult(validateString(inputString, maxLength))
+    setValidationResult(validateString({ inputString, maxLength }))
   }
 
   const getResultClass = (check) => (check ? 'valid' : 'invalid')

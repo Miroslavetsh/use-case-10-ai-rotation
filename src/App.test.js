@@ -30,7 +30,13 @@ describe(`${validateString.name} should work with simple cases`, () => {
           maxLength,
         })
 
-        expect(candidate).toBe(equalityComparison)
+        const validationItems = Object.values(candidate)
+
+        if (equalityComparison) {
+          expect(validationItems.every((v) => v === equalityComparison)).toBe(true)
+        } else {
+          expect(validationItems.some((v) => v === equalityComparison)).toBe(true)
+        }
       })
     }
   }
