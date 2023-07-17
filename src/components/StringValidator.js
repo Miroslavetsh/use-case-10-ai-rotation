@@ -1,19 +1,39 @@
 import React, { useState } from 'react'
 
-import { validateString } from '../utils'
-
 const StringValidator = () => {
   const [inputString, setInputString] = useState('')
   const [maxLength, setMaxLength] = useState(20)
-  const [isValid, setIsValid] = useState(false)
+  const [validationResult, setValidationResult] = useState({
+    lengthIsValid: true,
+    hasLowerCase: false,
+    hasUpperCase: false,
+    hasDigit: false,
+    hasSpecialChar: false,
+    hasNoWhitespace: true,
+  })
+
+  // TODO: move out to utils
+  const validateString = (str, maxLength) => {
+    const result = {
+      lengthIsValid: str.length <= maxLength,
+      hasLowerCase: /[a-z]/.test(str),
+      hasUpperCase: /[A-Z]/.test(str),
+      hasDigit: /\d/.test(str),
+      hasSpecialChar: /[!\"#$%&'()*+,\-./:;<=>?@\\[\\\]^_`{|}~]/.test(str),
+      hasNoWhitespace: !/\s/.test(str),
+    }
+    return result
+  }
 
   const handleValidate = (event) => {
     event.preventDefault()
-    setIsValid(validateString({ inputString, maxLength }))
+    setValidationResult(validateString(inputString, maxLength))
   }
 
+  const getResultClass = (check) => (check ? 'valid' : 'invalid')
+
   return (
-    <div>
+    <div className='validator'>
       <h2>String Validator</h2>
       <form onSubmit={handleValidate}>
         <label>
@@ -26,7 +46,25 @@ const StringValidator = () => {
         </label>
         <input type='submit' value='Validate' />
       </form>
-      <p>Is string valid?: {isValid.toString()}</p>
+      <h3>Validation Result:</h3>
+      <p className={getResultClass(validationResult.lengthIsValid)}>
+        Length is valid: {validationResult.lengthIsValid.toString()}
+      </p>
+      <p className={getResultClass(validationResult.hasLowerCase)}>
+        Has lowercase: {validationResult.hasLowerCase.toString()}
+      </p>
+      <p className={getResultClass(validationResult.hasUpperCase)}>
+        Has uppercase: {validationResult.hasUpperCase.toString()}
+      </p>
+      <p className={getResultClass(validationResult.hasDigit)}>
+        Has digit: {validationResult.hasDigit.toString()}
+      </p>
+      <p className={getResultClass(validationResult.hasSpecialChar)}>
+        Has special character: {validationResult.hasSpecialChar.toString()}
+      </p>
+      <p className={getResultClass(validationResult.hasNoWhitespace)}>
+        Has no whitespace: {validationResult.hasNoWhitespace.toString()}
+      </p>
     </div>
   )
 }

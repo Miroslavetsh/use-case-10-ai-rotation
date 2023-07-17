@@ -40,12 +40,23 @@
   }
 }
 
+/* Other styles */
 body {
   font-family: Arial, sans-serif;
+  background-color: #333;
+  color: white;
 }
 
 h2 {
-  color: #333;
+  color: #eee;
+}
+
+.validator {
+  background-color: #222;
+  padding: 20px;
+  border-radius: 10px;
+  max-width: 500px;
+  margin: 0 auto;
 }
 
 form {
@@ -80,5 +91,20 @@ input[type='submit']:hover {
 
 p {
   font-size: 18px;
-  color: #333;
+}
+
+.valid {
+  color: #0f0;
+}
+
+.valid::before {
+  content: '✓ ';
+}
+
+.invalid {
+  color: #f00;
+}
+
+.invalid::before {
+  content: '✗ ';
 }
