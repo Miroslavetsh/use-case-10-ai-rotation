@@ -1,3 +1,13 @@
+# Use case 10
+Compose regular expressions to search, match, or manipulate text within a string. Define a sequence of characters, metacharacters, and quantifiers that represent the desired pattern, while considering case sensitivity and whitespace. Adjust and optimize the regular expression. Implement it within the code to perform the desired text processing task, such as searching, validating, extracting, or replacing text.
+
+## Usage
+Enter a string into field and see if it passes the validation
+
+## Run locally
+- `npm run start` allows you to see the App on localhost:3000
+- `npm run test` allows you to see the testing 
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

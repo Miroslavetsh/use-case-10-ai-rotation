@@ -75,3 +75,387 @@ for(let i = 0; i < testStrings.length; i++) {
 In this JavaScript code, RegExp is used to create the regular expression, and test() function is used to test if the input string matches the pattern. The working of the regular expression remains the same as explained before. 
 
 Please remember to replace maxLength with the desired maximum length.
+
+# Question 3
+А теперь можем набросать простенький юай для использования этой функции?
+
+# Answer 3
+Конечно, можно создать простой интерфейс пользователя на HTML и JavaScript для использования этой функции. Вот пример:
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <title>String Validator</title>
+</head>
+<body>
+    <h2>String Validator</h2>
+    <form id="validatorForm">
+        <label for="stringInput">Enter string:</label><br>
+        <input type="text" id="stringInput" name="stringInput"><br>
+        <label for="maxLength">Enter maximum length:</label><br>
+        <input type="number" id="maxLength" name="maxLength"><br>
+        <input type="submit" value="Validate">
+    </form>
+    <p id="result"></p>
+
+    <script>
+    function validateString(inputString, maxLength) {
+        let pattern = new RegExp("^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[!\"#$%&'()*+,-./:;<=>?@\\[\\]^_`{|}~])[A-Za-z\\d!\"#$%&'()*+,-./:;<=>?@\\[\\]^_`{|}~]{1," + maxLength + "}$");
+
+        if(pattern.test(inputString)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    document.getElementById('validatorForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        let stringInput = document.getElementById('stringInput').value;
+        let maxLength = document.getElementById('maxLength').value;
+        let result = validateString(stringInput, maxLength);
+        document.getElementById('result').innerText = 'Is string valid?: ' + result;
+    });
+    </script>
+</body>
+</html>
+```
+
+Этот код создаёт простую веб-страницу с формой для ввода строки и максимальной длины. При нажатии на кнопку "Validate", вызывается функция validateString, а результат выводится на экран.
+
+# Question 4
+Давай на реакт это дело
+
+# Answer 4
+Конечно, ниже представлен простой React компонент для использования этой функции:
+
+jsx
+import React, { useState } from 'react';
+
+const StringValidator = () => {
+  const [inputString, setInputString] = useState('');
+  const [maxLength, setMaxLength] = useState(20);
+  const [isValid, setIsValid] = useState(false);
+
+  const validateString = (str, maxLength) => {
+    let pattern = new RegExp("^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[!\"#$%&'()*+,-./:;<=>?@\\[\\]^_`{|}~])[A-Za-z\\d!\"#$%&'()*+,-./:;<=>?@\\[\\]^_`{|}~]{1," + maxLength + "}$");
+    return pattern.test(str);
+  }
+
+  const handleValidate = (event) => {
+    event.preventDefault();
+    setIsValid(validateString(inputString, maxLength));
+  }
+
+  return (
+    <div>
+      <h2>String Validator</h2>
+      <form onSubmit={handleValidate}>
+        <label>
+          Enter string:
+          <input type="text" value={inputString} onChange={e => setInputString(e.target.value)} />
+        </label>
+        <label>
+          Enter maximum length:
+          <input type="number" value={maxLength} onChange={e => setMaxLength(e.target.value)} />
+        </label>
+        <input type="submit" value="Validate" />
+      </form>
+      <p>Is string valid?: {isValid.toString()}</p>
+    </div>
+  );
+}
+
+export default StringValidator;
+
+Этот компонент включает в себя два поля ввода для строки и максимальной длины, кнопку для валидации и параграф для вывода результата. Обработчик handleValidate вызывает validateString для проверки строки и затем устанавливает результат в состояние isValid. Обратите внимание, что этот компонент не предусматривает обработку ошибок, которые могут возникнуть при неверном вводе (например, если максимальная длина не является числом).
+
+# Question 5
+Воркает как надо! Давай добавим стилей для этого интерфейса в ./App.css
+
+# Answer 5
+Конечно, вот несколько базовых CSS стилей, которые вы можете добавить в ваш App.css файл, чтобы улучшить внешний вид интерфейса:
+
+css
+body {
+  font-family: Arial, sans-serif;
+}
+
+h2 {
+  color: #333;
+}
+
+form {
+  margin: 20px 0;
+}
+
+label {
+  display: block;
+  margin: 10px 0;
+}
+
+input[type="text"], input[type="number"] {
+  width: 100%;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+input[type="submit"] {
+  padding: 10px 20px;
+  background-color: #007BFF;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+input[type="submit"]:hover {
+  background-color: #0056b3;
+}
+
+p {
+  font-size: 18px;
+  color: #333;
+}
+
+Этот код CSS делает следующее:
+
+- Устанавливает общий шрифт для всего документа.
+- Устанавливает цвет для заголовка h2.
+- Добавляет немного отступа между формой и остальным контентом, и между метками внутри формы.
+- Делает поля ввода на всю ширину, с некоторым внутренним отступом.
+- Оформляет кнопку отправки формы, делает ее синей и меняет цвет при наведении.
+- Устанавливает размер шрифта и цвет для параграфа с результатом.
+
+# Question 6
+А можем разбить валидацию на несколько пунктов (по всем реквайрементам) чтобы не просто было true/false, а чтобы я видел, какие именно пункты валидации провалены?
+
+# Answer 6
+Да, это можно сделать, модифицировав функцию validateString так, чтобы она возвращала объект с информацией о результатах каждой проверки. Здесь новая версия компонента StringValidator:
+
+jsx
+import React, { useState } from 'react';
+
+const StringValidator = () => {
+  const [inputString, setInputString] = useState('');
+  const [maxLength, setMaxLength] = useState(20);
+  const [validationResult, setValidationResult] = useState({
+    lengthIsValid: true,
+    hasLowerCase: false,
+    hasUpperCase: false,
+    hasDigit: false,
+    hasSpecialChar: false,
+    hasNoWhitespace: true,
+  });
+
+  const validateString = (str, maxLength) => {
+    const result = {
+      lengthIsValid: str.length <= maxLength,
+      hasLowerCase: /[a-z]/.test(str),
+      hasUpperCase: /[A-Z]/.test(str),
+      hasDigit: /\d/.test(str),
+      hasSpecialChar: /[!\"#$%&'()*+,-./:;<=>?@\\[\\]^_`{|}~]/.test(str),
+      hasNoWhitespace: !/\s/.test(str),
+    }
+    return result;
+  }
+
+  const handleValidate = (event) => {
+    event.preventDefault();
+    setValidationResult(validateString(inputString, maxLength));
+  }
+
+  return (
+    <div>
+      <h2>String Validator</h2>
+      <form onSubmit={handleValidate}>
+        <label>
+          Enter string:
+          <input type="text" value={inputString} onChange={e => setInputString(e.target.value)} />
+        </label>
+        <label>
+          Enter maximum length:
+          <input type="number" value={maxLength} onChange={e => setMaxLength(e.target.value)} />
+        </label>
+        <input type="submit" value="Validate" />
+      </form>
+      <h3>Validation Result:</h3>
+      <p>Length is valid: {validationResult.lengthIsValid.toString()}</p>
+      <p>Has lowercase: {validationResult.hasLowerCase.toString()}</p>
+      <p>Has uppercase: {validationResult.hasUpperCase.toString()}</p>
+      <p>Has digit: {validationResult.hasDigit.toString()}</p>
+      <p>Has special character: {validationResult.hasSpecialChar.toString()}</p>
+      <p>Has no whitespace: {validationResult.hasNoWhitespace.toString()}</p>
+    </div>
+  );
+}
+
+export default StringValidator;
+
+Теперь, вместо одного булевого значения, функция validateString возвращает объект с результатами каждой проверки. В компоненте эти результаты отображаются как отдельные пункты под заголовком "Validation Result".
+
+# Question 7
+hasSpecialChar всегда фолс, почему так?
+
+# Answer 7
+Извините за недоразумение. Проблема в том, как JavaScript интерпретирует строку регулярного выражения. Некоторые символы в строке регулярного выражения для специальных символов следует "экранировать" двумя обратными слешами (\\), чтобы они были правильно интерпретированы как литеральные символы.
+
+Пожалуйста, используйте следующее обновление для функции validateString:
+
+jsx
+const validateString = (str, maxLength) => {
+  const result = {
+    lengthIsValid: str.length <= maxLength,
+    hasLowerCase: /[a-z]/.test(str),
+    hasUpperCase: /[A-Z]/.test(str),
+    hasDigit: /\d/.test(str),
+    hasSpecialChar: /[!\"#$%&'()*+,\-./:;<=>?@\\[\\\]^_`{|}~]/.test(str),
+    hasNoWhitespace: !/\s/.test(str),
+  }
+  return result;
+}
+
+Обратите внимание на изменение в строке hasSpecialChar. Здесь символ - (дефис) был экранирован \-, потому что в регулярных выражениях JavaScript он обычно используется для обозначения диапазона символов (как в [a-z]), и его нужно экранировать, чтобы он был интерпретирован как литеральный символ дефиса.
+
+# Question 8
+Красота, давай уже тогда сделаем и стилизацию соответствующую, сделай чтобы невалидные сообщения подсвечивались
+
+# Answer 8
+Хорошо, давайте сначала обновим компонент StringValidator, чтобы добавить различные классы в зависимости от результатов валидации. Затем мы обновим App.css, чтобы добавить нужные стили.
+
+Компонент StringValidator теперь выглядит так:
+
+jsx
+import React, { useState } from 'react';
+
+const StringValidator = () => {
+  const [inputString, setInputString] = useState('');
+  const [maxLength, setMaxLength] = useState(20);
+  const [validationResult, setValidationResult] = useState({
+    lengthIsValid: true,
+    hasLowerCase: false,
+    hasUpperCase: false,
+    hasDigit: false,
+    hasSpecialChar: false,
+    hasNoWhitespace: true,
+  });
+
+  const validateString = (str, maxLength) => {
+    const result = {
+      lengthIsValid: str.length <= maxLength,
+      hasLowerCase: /[a-z]/.test(str),
+      hasUpperCase: /[A-Z]/.test(str),
+      hasDigit: /\d/.test(str),
+      hasSpecialChar: /[!\"#$%&'()*+,\-./:;<=>?@\\[\\\]^_`{|}~]/.test(str),
+      hasNoWhitespace: !/\s/.test(str),
+    }
+    return result;
+  }
+
+  const handleValidate = (event) => {
+    event.preventDefault();
+    setValidationResult(validateString(inputString, maxLength));
+  }
+
+  const getResultClass = (check) => check ? "valid" : "invalid";
+
+  return (
+    <div className="validator">
+      <h2>String Validator</h2>
+      <form onSubmit={handleValidate}>
+        <label>
+          Enter string:
+          <input type="text" value={inputString} onChange={e => setInputString(e.target.value)} />
+        </label>
+        <label>
+          Enter maximum length:
+          <input type="number" value={maxLength} onChange={e => setMaxLength(e.target.value)} />
+        </label>
+        <input type="submit" value="Validate" />
+      </form>
+      <h3>Validation Result:</h3>
+      <p className={getResultClass(validationResult.lengthIsValid)}>Length is valid: {validationResult.lengthIsValid.toString()}</p>
+      <p className={getResultClass(validationResult.hasLowerCase)}>Has lowercase: {validationResult.hasLowerCase.toString()}</p>
+      <p className={getResultClass(validationResult.hasUpperCase)}>Has uppercase: {validationResult.hasUpperCase.toString()}</p>
+      <p className={getResultClass(validationResult.hasDigit)}>Has digit: {validationResult.hasDigit.toString()}</p>
+      <p className={getResultClass(validationResult.hasSpecialChar)}>Has special character: {validationResult.hasSpecialChar.toString()}</p>
+      <p className={getResultClass(validationResult.hasNoWhitespace)}>Has no whitespace: {validationResult.hasNoWhitespace.toString()}</p>
+    </div>
+  );
+}
+
+export default StringValidator;
+
+А здесь обновления для App.css:
+
+css
+body {
+  font-family: Arial, sans-serif;
+  background-color: #333;
+  color: white;
+}
+
+h2 {
+  color: #eee;
+}
+
+.validator {
+  background-color: #222;
+  padding: 20px;
+  border-radius: 10px;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+form {
+  margin: 20px 0;
+}
+
+label {
+  display: block;
+  margin: 10px 0;
+}
+
+input[type="text"], input[type="number"] {
+  width: 100%;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+input[type="submit"] {
+  padding: 10px 20px;
+  background-color: #007BFF;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+input[type="submit"]:hover {
+  background-color: #0056b3;
+}
+
+p {
+  font-size: 18px;
+}
+
+.valid {
+  color: #0f0;
+}
+
+.valid::before {
+  content: '✓ ';
+}
+
+.invalid {
+  color: #f00;
+}
+
+.invalid::before {
+  content: '✗ ';
+}
+
+Теперь у нас есть темный фон для всего окна и более темный фон для компонента StringValidator. Невалидные пункты валидации теперь подсвечиваются красным, а валидные - зеленым. Кроме того, к каждому пункту добавлены символы галочки или крестика.
