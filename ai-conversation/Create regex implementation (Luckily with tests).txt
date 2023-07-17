@@ -1,0 +1,77 @@
+# Question 1
+•  Compose function with a single regular expression that successfully meets requirements below:
+•  This regular expression should validate the maximum string length (passed as parameter); it should return a match if the string length is within the acceptable range and a non-match if it is not.
+•  This regular expression should also validate that the string contains at least one uppercase letter, one lowercase letter, one digit, and one special character from a predefined list: !"#$%&'()*+,-./:;<=>?@[\]^_`{|}~. It should return a match if the criteria are met and a non-match if they are not.
+•  This regular expression should validate that the string does not contain any whitespace characters (spaces, tabs, or newlines). This should return a non-match if any whitespace characters are found.
+•  The regular expression should be optimized for execution speed and simplicity. The regular expression should still fulfill all the above criteria.
+•  The regular expression should be tested in code on a variety of sample inputs and edge cases (10) to ensure the regex is functioning properly.
+•  The regular expression should be implemented within the code in a way that it can be easily reused for various inputs.
+•  Implementation should not introduce any unexpected behavior or bugs.
+•  Clear and concise documentation should be provided for the regular expression, explaining how it works, and any caveats or limitations.
+
+# Answer 1
+Below is the Python code for creating a regular expression as per the provided requirements. This regex uses lookahead assertions to make sure that the password has at least one digit, one lowercase letter, one uppercase letter, one special character and no whitespace. 
+
+python
+import re
+
+def validate_string(input_string, max_length):
+    # Regular expression pattern
+    pattern = r"^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!\"#$%&'()*+,-./:;<=>?@\[\]^_`{|}~])[A-Za-z\d!\"#$%&'()*+,-./:;<=>?@\[\]^_`{|}~]{1," + str(max_length) + r"}$"
+    
+    if re.fullmatch(pattern, input_string):
+        return True
+    else:
+        return False
+
+# Testing on variety of sample inputs
+test_strings = ["Valid1!", "Invalid", "v@lid1", "VALID1@", "Val1d@longpasswordexceedingmaximumlength", "Valid1!with spaces", "Valid1!\tWithTab", "Valid1!\nWithNewLine", "1234567890", "         "]
+max_length = 20
+for test_string in test_strings:
+    print(f'Is "{test_string}" valid?: {validate_string(test_string, max_length)}')
+
+The above regular expression works as follows:
+- ^ asserts start of line.
+- (?=.*[A-Z]) is a positive lookahead, asserting that at least one uppercase letter exists.
+- (?=.*[a-z]) is a positive lookahead, asserting that at least one lowercase letter exists.
+- (?=.*\d) is a positive lookahead, asserting that at least one digit exists.
+- (?=.*[!\"#$%&'()*+,-./:;<=>?@\[\]^_{|}~])` is a positive lookahead, asserting that at least one special character exists.
+- [A-Za-z\d!\"#$%&'()*+,-./:;<=>?@\[\]^_{|}~]{1,max_length} matches any character (upper, lower, digit, special) between 1 and `max_length times (inclusive).
+- $ asserts end of line.
+
+By combining all these together in a single regular expression, we ensure that all requirements are met. Please replace max_length with the desired maximum length.
+
+Limitations:
+- If the input string is empty, this function will return False.
+- The function does not handle None or NaN values.
+- Maximum length is inclusive. If you want the maximum length to be exclusive, modify the code accordingly.
+- Special characters are restricted to the predefined list. Other special characters will result in a non-match.
+
+# Question 2
+Amazing! Transform it into JS
+
+# Answer 2
+Sure, I can translate that Python code into JavaScript. Here is the equivalent code:
+
+javascript
+function validateString(inputString, maxLength) {
+    // Regular expression pattern
+    let pattern = new RegExp("^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[!\"#$%&'()*+,-./:;<=>?@\\[\\]^_`{|}~])[A-Za-z\\d!\"#$%&'()*+,-./:;<=>?@\\[\\]^_`{|}~]{1," + maxLength + "}$");
+
+    if(pattern.test(inputString)) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+// Testing on variety of sample inputs
+let testStrings = ["Valid1!", "Invalid", "v@lid1", "VALID1@", "Val1d@longpasswordexceedingmaximumlength", "Valid1!with spaces", "Valid1!\tWithTab", "Valid1!\nWithNewLine", "1234567890", "         "];
+let maxLength = 20;
+for(let i = 0; i < testStrings.length; i++) {
+    console.log(`Is "${testStrings[i]}" valid?: ${validateString(testStrings[i], maxLength)}`);
+}
+
+In this JavaScript code, RegExp is used to create the regular expression, and test() function is used to test if the input string matches the pattern. The working of the regular expression remains the same as explained before. 
+
+Please remember to replace maxLength with the desired maximum length.
